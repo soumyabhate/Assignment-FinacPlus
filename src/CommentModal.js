@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   commentInput: {
     width: '100%',
+    border:'1px solid black'
   },
 }));
 
@@ -148,8 +149,9 @@ const CommentModal=(props)=> {
           ))}
         </List>
         <FormControl className={classes.commentInput}>
-          <InputLabel htmlFor="comment-input">Add a comment</InputLabel>
+          <InputLabel style={{padding:'2px'}} htmlFor="comment-input">Add a comment</InputLabel>
           <Input
+            style={{padding:'34px'}}
             id="comment-input"
             value={commentText}
             onChange={handleCommentTextChange}
@@ -165,7 +167,7 @@ const CommentModal=(props)=> {
             }
             />
         </FormControl>
-            <FormControl sx={{marginLeft:'15pc'}}>
+            <FormControl style={{marginLeft:'15pc',width:'100%'}}>
               <InputLabel id="people-select-label">Tag people</InputLabel>
               <Select
               labelId="people-select-label"

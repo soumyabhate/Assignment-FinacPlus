@@ -8,7 +8,7 @@ export default function App() {
 
   return (
     <div>
-      <Button style={{'marginLeft': '40%','marginTop': '44%'}} variant="contained" color="primary" onClick={() => setOpen(true)}>
+      <Button style={{'marginLeft': '40%','marginTop': '20%'}} variant="contained" color="primary" onClick={() => setOpen(true)}>
       Comment Modal
       </Button>
       <CommentModal open={open} onClose={() => setOpen(false)} people={people} />
