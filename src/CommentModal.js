@@ -117,13 +117,6 @@ const CommentModal=(props)=> {
                 secondary={
                   <>
                   <>
-                    loanId:
-                      <React.Fragment key={index}>
-                        {index > 0 && ', '}
-                        {comment.loanId}&nbsp;
-                      </React.Fragment>
-                  </>
-                  <>
                   Tagged:
                   {comment.people?.map((person, index) => (
                     <React.Fragment key={index}>
@@ -167,7 +160,7 @@ const CommentModal=(props)=> {
             }
             />
         </FormControl>
-            <FormControl style={{marginLeft:'15pc',width:'100%'}}>
+            <FormControl style={{width:'100%'}}>
               <InputLabel id="people-select-label">Tag people</InputLabel>
               <Select
               labelId="people-select-label"
