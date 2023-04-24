@@ -44,8 +44,10 @@ const useStyles = makeStyles((theme) => ({
   },
   commentInput: {
     width: '100%',
-    border:'1px solid black'
+    border:'1px solid grey',
+    borderRadius:'10px'
   },
+  tagContainer:{width:'100%', border: '1px solid grey',borderRadius: '10px',marginTop: '11px'}
 }));
 
 const CommentModal=(props)=> {
@@ -108,7 +110,7 @@ const CommentModal=(props)=> {
       <Paper className={classes.paper}>
         <div style={{display:'flex'}}>
         <h2>Comments ({comments.length})</h2>
-        <h2 style={{marginLeft:'auto',background:'blue',borderRadius:'1px'}} >LOAN ID- 111711182</h2>
+        <h5 style={{marginLeft:'auto',background:'lightblue',borderRadius:'10px',padding:'10px'}} >LOAN ID- 111711182</h5>
         </div>
         <List>
           {comments.map((comment, index) => (
@@ -163,8 +165,8 @@ const CommentModal=(props)=> {
             }
             />
         </FormControl>
-            <FormControl style={{width:'100%'}}>
-              <InputLabel id="people-select-label">Tag people</InputLabel>
+            <FormControl className={classes.tagContainer}>
+              <InputLabel style={{marginLeft:'10px',paddingTop:'-4px'}} id="people-select-label">Tag people</InputLabel>
               <Select
               labelId="people-select-label"
               id="people-select"
