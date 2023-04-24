@@ -106,7 +106,10 @@ const CommentModal=(props)=> {
   return (
     <Modal open={open} onClose={onClose} className={classes.modal}>
       <Paper className={classes.paper}>
+        <div style={{display:'flex'}}>
         <h2>Comments ({comments.length})</h2>
+        <h2 style={{marginLeft:'auto',background:'blue',borderRadius:'1px'}} >LOAN ID- 111711182</h2>
+        </div>
         <List>
           {comments.map((comment, index) => (
             <>
