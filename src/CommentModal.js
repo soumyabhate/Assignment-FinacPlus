@@ -165,7 +165,7 @@ const CommentModal=(props)=> {
             }
             />
         </FormControl>
-            <FormControl className={classes.formControl}>
+            <FormControl sx={{marginLeft:'15pc'}}>
               <InputLabel id="people-select-label">Tag people</InputLabel>
               <Select
               labelId="people-select-label"
