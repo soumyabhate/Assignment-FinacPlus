@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius:'10px'
   },
   tagContainer:{width:'100%', border: '1px solid grey',borderRadius: '10px',marginTop: '11px'},
-  loanContainer:{marginLeft:'auto',background:'lightblue',borderRadius:'10px',padding:'10px'}
+  loanContainer:{marginLeft:'auto',background:'lightblue',borderRadius:'10px',padding:'10px'},
+  closeButton:{top:'3%',right:'20px'}
 }));
 
 const CommentModal=(props)=> {
@@ -191,7 +192,7 @@ const CommentModal=(props)=> {
               ))}
               </Select>
             </FormControl>
-            <ListItemSecondaryAction>
+            <ListItemSecondaryAction className={classes.closeButton}>
               <IconButton edge="end" onClick={onClose}>
                 <CloseIcon />
               </IconButton>
