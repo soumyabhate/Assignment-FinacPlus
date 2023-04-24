@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import InitialsAvatar from 'react-initials-avatar';
+import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
+import {
+  Add as AddIcon,
+  Close as CloseIcon,
+  Person as PersonIcon,
+} from '@material-ui/icons';
 import {
   Modal,
   Paper,
@@ -18,142 +25,177 @@ import {
   Select,
   MenuItem,
   Checkbox,
-  ListSubheader,
-  Button,
+  ListSubheader
 } from '@material-ui/core';
-import {
-  Add as AddIcon,
-  Close as CloseIcon,
-  Person as PersonIcon,
-} from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow:'auto'
   },
   paper: {
-    width: 400,
+    position: "absolute",
+    width: 600,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    padding: theme.spacing(4),
   },
   commentInput: {
     width: '100%',
   },
 }));
 
-const commentData = [
-  {
-    id: 1,
-    loanId: 123456,
-    user: 'Ethel Howard Daniel',
-    comment: 'This is a test comment',
-    date: '2022-01-01T12:00:00.000Z',
-    people: ['John Doe'],
-  },
-  {
-    id: 2,
-    loanId: 123456,
-    user: 'John Doe',
-    comment: 'This is another test comment',
-    date: '2022-01-03T12:00:00.000Z',
-    people: ['Ethel Howard Daniel'],
-  },
-];
-
-function CommentModal() {
-  const [open, setOpen] = useState(false);
+const CommentModal=(props)=> {
+  const classes = useStyles();
+  const { open, onClose, people } = props;
+  const [commentText, setCommentText] = useState('');
+  const [selectedPeople, setSelectedPeople] = useState([]);
   const [comments, setComments] = useState([]);
-  const [people, setPeople] = useState([]);
-  const [formState, setFormState] = useState({
-    user: '',
-    comment: '',
-    people: [],
-  });
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
         'https://mocki.io/v1/b0c7d7ea-5d09-4b9c-8d4b-c1b40cc39bc9',
       );
-      setComments(result.data.comments);
-      setPeople(result.data.people);
+      const newArray=result.data.comments.map((commentt)=>{
+        const options = { year: "numeric", month: "long", day: "numeric",hour: 'numeric', hour12: true}
+        const date= new Date(commentt.updatedOn).toLocaleDateString(undefined, options)
+        const newComment = {
+          id: comments.length + 1,
+          loanId: 123456,
+          comment:commentt.comment,
+          date:  date,
+          people:commentt.taggedTo,
+          user:commentt.updatedBy
+        };
+        return newComment;
+      })
+      setComments(...comments,newArray)
     };
     fetchData();
   }, []);
 
-  function handleOpen() {
-    setOpen(true);
-  }
+  const handleCommentTextChange = (event) => {
+    setCommentText(event.target.value);
+  };
 
-  function handleClose() {
-    setOpen(false);
-  }
-
-  function handleChange(event) {
-    setFormState({
-      ...formState,
-      [event.target.name]: event.target.value,
-    });
-  }
-
-  function handlePeopleChange(event) {
-    setFormState({
-      ...formState,
-      people: event.target.value,
-    });
-  }
+  const handlePersonSelect = (event) => {
+    setSelectedPeople(event.target.value);
+  };
 
   function handleSubmit(event) {
     event.preventDefault();
+    const options = { year: "numeric", month: "long", day: "numeric",hour: 'numeric', hour12: true}
+    const date= new Date().toLocaleDateString(undefined, options)
     const newComment = {
       id: comments.length + 1,
       loanId: 123456,
-      user: formState.user,
-      comment: formState.comment,
-      date: new Date().toISOString(),
-      people: formState.people,
+      comment: commentText,
+      date: date,
+      people: selectedPeople,
     };
+    console.log(newComment)
     setComments([...comments, newComment]);
-    setFormState({
-      user: '',
-      comment: '',
-      people: [],
-    });
+    setCommentText('');
+    setSelectedPeople([]);
   }
 
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    return `${date.toDateString()}`
-  }
   return (
     <Modal open={open} onClose={onClose} className={classes.modal}>
       <Paper className={classes.paper}>
         <h2>Comments ({comments.length})</h2>
         <List>
           {comments.map((comment, index) => (
+            <>
+            <InitialsAvatar name={`${comment.user}`} />
             <ListItem key={index}>
               <ListItemText
-                primary={comment.text}
+                primary={comment.comment}
                 secondary={
                   <>
-                    Tagged:
-                    {comment.people.map((person, index) => (
+                  <>
+                    loanId:
                       <React.Fragment key={index}>
                         {index > 0 && ', '}
-                        {person.name}
+                        {comment.loanId}&nbsp;
                       </React.Fragment>
-                    ))}
                   </>
+                  <>
+                  Tagged:
+                  {comment.people?.map((person, index) => (
+                    <React.Fragment key={index}>
+                      {index > 0 && ', '}
+                      {person}&nbsp;
+                    </React.Fragment>
+                  ))}
+                 </>
+                 <>
+                 <br></br>
+                  Date:
+                    <React.Fragment key={index}>
+                      {index > 0 && ', '}
+                      {comment.date}
+                    </React.Fragment>
+                 </>
+                </>
                 }
               />
+              
             </ListItem>
+            </>
           ))}
         </List>
-        </Paper>
-        </Modal>
-  )
-
-}
+        <FormControl className={classes.commentInput}>
+          <InputLabel htmlFor="comment-input">Add a comment</InputLabel>
+          <Input
+            id="comment-input"
+            value={commentText}
+            onChange={handleCommentTextChange}
+            endAdornment={
+            <InputAdornment position="end">
+            <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleSubmit}
+                        >
+            <AddIcon />
+            </IconButton>
+            </InputAdornment>
+            }
+            />
+        </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="people-select-label">Tag people</InputLabel>
+              <Select
+              labelId="people-select-label"
+              id="people-select"
+              multiple
+              value={selectedPeople}
+              onChange={handlePersonSelect}
+              input={<Input />}
+              renderValue={(selected) => selected.join(', ')}
+              >
+              <ListSubheader>Select people</ListSubheader>
+              {people.map((person,id) => (
+              <MenuItem key={id} value={person}>
+                <Checkbox checked={selectedPeople.indexOf(person) > -1} />
+                <ListItemAvatar>
+                  <Avatar>
+                    <PersonIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={person} />
+              </MenuItem>
+              ))}
+              </Select>
+            </FormControl>
+            <ListItemSecondaryAction>
+              <IconButton edge="end" onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+      </Paper>
+    </Modal>)
+  }
+  export default CommentModal;
