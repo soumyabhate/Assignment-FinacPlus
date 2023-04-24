@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     position: "absolute",
-    width: 600,
+    width:1000,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(4),
@@ -45,9 +45,10 @@ const useStyles = makeStyles((theme) => ({
   commentInput: {
     width: '100%',
     border:'1px solid grey',
-    borderRadius:'10px'
+    borderRadius:'10px',
+    overflow:'hidden'
   },
-  tagContainer:{width:'100%', border: '1px solid grey',borderRadius: '10px',marginTop: '11px'},
+  tagContainer:{width:'100%', border: '1px solid grey',borderRadius: '10px',marginTop: '11px',overflow:'hidden'},
   loanContainer:{marginLeft:'auto',background:'lightblue',borderRadius:'10px',padding:'10px'},
   closeButton:{top:'3%',right:'20px'}
 }));
