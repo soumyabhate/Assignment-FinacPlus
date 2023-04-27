@@ -66,7 +66,7 @@ const CommentModal=(props)=> {
         'https://mocki.io/v1/b0c7d7ea-5d09-4b9c-8d4b-c1b40cc39bc9',
       );
       const newArray=result.data.comments.map((commentt)=>{
-        const options = { year: "numeric", month: "long", day: "numeric",hour: 'numeric', hour12: true}
+        const options = { year: "numeric", month: "long", day: "numeric",hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true}
         const date= new Date(commentt.updatedOn).toLocaleDateString(undefined, options)
         const newComment = {
           id: comments.length + 1,
@@ -93,7 +93,7 @@ const CommentModal=(props)=> {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const options = { year: "numeric", month: "long", day: "numeric",hour: 'numeric', hour12: true}
+    const options = { year: "numeric", month: "long", day: "numeric",hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true}
     const date= new Date().toLocaleDateString(undefined, options)
     const newComment = {
       id: comments.length + 1,
